@@ -6,7 +6,7 @@
   "major_version": "1",
   "minor_version": "0",
   "_copy_without_render": [
-    "*.js"
+    "*.js", "*.html"
   ]
 
 }
