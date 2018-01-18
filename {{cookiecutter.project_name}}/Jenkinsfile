@@ -1,0 +1,39 @@
+node { 
+    def build;
+    def buildVersion = env.BUILD_NUMBER;
+    def version;
+
+    stage('Checkout') {
+        checkout scm
+        build = readYaml file: "build.yml";
+	    version = "${build.majorVersion}.${build.minorVersion}.$buildVersion"
+    }
+
+    stage('Build') {
+        def nodeHome = tool 'Node 7'
+        env.PATH="${env.PATH}:${nodeHome}/bin"
+        sh 'rm -rf node_modules'
+        sh 'npm install'
+
+        sh 'ng build -aot -sm -op dist/test'
+        sh 'ng build -aot -sm -prod -op dist/prod '
+    }
+
+    if(env.BRANCH_NAME == "master") {
+
+        stage('Tag it') {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'github_credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+                sh("git config user.email ci@codezoo.dk")
+    		        sh("git config user.name 'CI'")
+		            sh("git tag -a ${version} -m 'Jenkins tagged new build'")
+                sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/EG-BRS/' + build.name + '.git --tags')
+            }
+        }
+
+        stage('Package') {
+            docker.withRegistry("https://kalk1-on.azurecr.io", "KALK1_CONTAINER_REGISTRY") {
+                docker.build("kalk1-on.azurecr.io/${build.name}:${version}").push()
+            }
+        }
+    }
+}

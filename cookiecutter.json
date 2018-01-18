@@ -1,0 +1,12 @@
+{
+  "groupid": "dk.codezoo",
+  "project_name": "ng-app",
+  "git_name": "cookiecutter-ng-app",
+  "project_description": "",
+  "major_version": "1",
+  "minor_version": "0",
+  "_copy_without_render": [
+    "*.js"
+  ]
+
+}

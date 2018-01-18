@@ -1,27 +1,6 @@
-# TemplateAngular
+# Template for Angular apps
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.4.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This template is a very basic Angular App created using Angular CLI. It is basically just the default project created using `ng new` but with a few extra features:
+* A test environment has been added in addition to dev and prod.
+* When build by Jenkins, both a test artifact and a prod artifact will be build. They are both built using the `-prod -sm` flags and only differ by the environment they include. The will be output in `/dist/test` and `/dist/prod' accordingly.
+* The image built with Docker will accept the environment variable `PROFILE` for choosing either `test`(default) or `prod`. The chosen profile is injected into nginx in order for it to serve the correct artifact.
