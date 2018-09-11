@@ -1,5 +1,5 @@
 node { 
-    def buildDetails = checkoutWithDetails(buildNumber:env.BUILD_NUMBER)
+    def buildDetails = checkoutWithDetails(buildNumber:env.BUILD_NUMBER, branch:env.BRANCH_NAME)
 
     stage('Build') {
         def nodeHome = tool 'Node 7'
@@ -11,7 +11,5 @@ node {
         sh 'ng build --aot --source-map --prod --output-path dist/prod '
     }
 
-    if(env.BRANCH_NAME == "master") {
-        buildDockerImage(buildDetails)
-    }
+    buildDockerImage(buildDetails)
 }
