@@ -7,8 +7,8 @@ node {
         sh 'rm -rf node_modules'
         sh 'npm install'
 
-        sh 'ng build -aot -sm -op dist/test'
-        sh 'ng build -aot -sm -prod -op dist/prod '
+        sh 'ng build --aot --source-map --output-path dist/test'
+        sh 'ng build --aot --source-map --prod --output-path dist/prod '
     }
 
     if(env.BRANCH_NAME == "master") {
